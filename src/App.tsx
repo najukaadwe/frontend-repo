@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getProducts, calculateBill } from "./redux/api";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem, setBill } from "./redux/cartSlice";
