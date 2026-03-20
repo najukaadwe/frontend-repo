@@ -1,0 +1,70 @@
+import axios from "axios";
+import type { AxiosResponse } from "axios";
+
+// ✅ Base URL
+const BASE_URL = "http://localhost:5000";
+
+// ==============================
+// ✅ TYPES
+// ==============================
+
+// Product
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+}
+
+// Basket Item
+export interface BasketItem {
+  id: string;
+  quantity: number;
+}
+
+// Offer
+export interface Offer {
+  item: string;
+  offer: string;
+  savings: number;
+}
+
+// Bill Response (FIXED 🔥)
+export interface BillResponse {
+  subtotal: number;
+  savings: number;
+  total: number;
+  offers?: Offer[];
+}
+
+// ==============================
+// ✅ GET Products
+// ==============================
+export const getProducts = async (): Promise<Product[]> => {
+  try {
+    const res: AxiosResponse<Product[]> = await axios.get(
+      `${BASE_URL}/products`
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+};
+
+// ==============================
+// ✅ POST Calculate Bill
+// ==============================
+export const calculateBill = async (
+  basket: BasketItem[]
+): Promise<BillResponse> => {
+  try {
+    const res: AxiosResponse<BillResponse> = await axios.post(
+      `${BASE_URL}/calculate`,
+      basket
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Error calculating bill:", error);
+    throw error;
+  }
+};
