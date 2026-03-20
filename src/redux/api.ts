@@ -2,7 +2,7 @@ import axios from "axios";
 import type { AxiosResponse } from "axios";
 
 // ✅ Base URL
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://shopping-backend-4x5g.onrender.com";
 
 // ==============================
 // ✅ TYPES
