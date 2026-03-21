@@ -1,33 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-// ✅ Basket Type
 type Basket = {
   [key: string]: number;
 };
 
-// ✅ Offer Type
 type Offer = {
   item: string;
   offer: string;
   savings: number;
 };
 
-// ✅ Bill Type (FIXED 🔥)
 type Bill = {
   subtotal: number;
   savings: number;
   total: number;
   offers?: Offer[];
+  itemSavings?: Record<string, number>;
 };
 
-// ✅ State Type
 interface CartState {
   basket: Basket;
   bill: Bill | null;
 }
 
-// ✅ Initial State
 const initialState: CartState = {
   basket: {},
   bill: null,
@@ -37,32 +33,27 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    // ✅ Add Item
     addItem: (state, action: PayloadAction<string>) => {
-      const name = action.payload;
-      state.basket[name] = (state.basket[name] || 0) + 1;
+      const id = action.payload;
+      state.basket[id] = (state.basket[id] || 0) + 1;
     },
 
-    // ✅ Remove Item
     removeItem: (state, action: PayloadAction<string>) => {
-      const name = action.payload;
+      const id = action.payload;
 
-      if (!state.basket[name]) return;
+      if (!state.basket[id]) return;
 
-      state.basket[name] -= 1;
+      state.basket[id] -= 1;
 
-      // ✅ remove item if 0 (clean state 🔥)
-      if (state.basket[name] <= 0) {
-        delete state.basket[name];
+      if (state.basket[id] <= 0) {
+        delete state.basket[id];
       }
     },
 
-    // ✅ Set Bill
     setBill: (state, action: PayloadAction<Bill>) => {
       state.bill = action.payload;
     },
 
-    // ✅ Clear Cart (recommended 🚀)
     clearCart: (state) => {
       state.basket = {};
       state.bill = null;
@@ -70,5 +61,7 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addItem, removeItem, setBill, clearCart } = cartSlice.actions;
+export const { addItem, removeItem, setBill, clearCart } =
+  cartSlice.actions;
+
 export default cartSlice.reducer;

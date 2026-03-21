@@ -30,7 +30,7 @@ type Bill = {
 
 const App = () => {
   const [products, setProducts] = useState<Product[]>([]);
-
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   const basket = useSelector((state: RootState) => state.cart.basket);
@@ -41,8 +41,15 @@ const App = () => {
   // ==============================
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getProducts();
-      setProducts(data);
+      try {
+        setLoading(true);
+        const data = await getProducts();
+        setProducts(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
@@ -78,24 +85,35 @@ const App = () => {
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Products</h2>
 
-          {products.map((p) => (
-            <div
-              key={p.id}
-              className="flex justify-between items-center border-b py-3"
-            >
-              <div>
-                <p className="font-medium">{p.name}</p>
-                <p className="text-gray-500 text-sm">£{p.price}</p>
-              </div>
-
-              <button
-                onClick={() => dispatch(addItem(p.id))}
-                className="bg-blue-500 text-white px-3 py-1 rounded-lg"
-              >
-                Add
-              </button>
+          {loading ? (
+            <div className="flex justify-center items-center h-32">
+              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
-          ))}
+          ) : (
+            products.map((p) => (
+              <div
+                key={p.id}
+                className="flex justify-between items-center border-b py-3"
+              >
+                <div>
+                  <p className="font-medium">{p.name}</p>
+                  <p className="text-gray-500 text-sm">£{p.price}</p>
+                  
+                </div>
+
+                <button
+                  onClick={() => dispatch(addItem(p.id))}
+                  disabled={basket[p.id] >= 1}
+                  className={`px-3 py-1 rounded-lg text-white ${basket[p.id] >= 1
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-blue-500"
+                    }`}
+                >
+                  Add
+                </button>
+              </div>
+            ))
+          )}
         </div>
 
         {/* ================= BASKET ================= */}
