@@ -5,9 +5,7 @@ import { addItem, removeItem, setBill } from "./redux/cartSlice";
 import { saveOrder } from "./firebaseService";
 import type { RootState } from "./redux/store";
 
-// ==============================
-// ✅ TYPES
-// ==============================
+
 type Product = {
   id: string;
   name: string;
@@ -36,9 +34,6 @@ const App = () => {
   const basket = useSelector((state: RootState) => state.cart.basket);
   const bill = useSelector((state: RootState) => state.cart.bill) as Bill | null;
 
-  // ==============================
-  // ✅ FETCH PRODUCTS
-  // ==============================
   useEffect(() => {
     const fetchData = async () => {
       try {

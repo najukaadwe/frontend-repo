@@ -4,9 +4,7 @@ import type { AxiosResponse } from "axios";
 // ✅ Base URL
 const BASE_URL = "https://shopping-backend-4x5g.onrender.com";
 
-// ==============================
-// ✅ TYPES
-// ==============================
+
 
 // Product
 export interface Product {
@@ -36,9 +34,7 @@ export interface BillResponse {
   offers?: Offer[];
 }
 
-// ==============================
-// ✅ GET Products
-// ==============================
+
 export const getProducts = async (): Promise<Product[]> => {
   try {
     const res: AxiosResponse<Product[]> = await axios.get(
@@ -51,9 +47,7 @@ export const getProducts = async (): Promise<Product[]> => {
   }
 };
 
-// ==============================
-// ✅ POST Calculate Bill
-// ==============================
+
 export const calculateBill = async (
   basket: BasketItem[]
 ): Promise<BillResponse> => {
